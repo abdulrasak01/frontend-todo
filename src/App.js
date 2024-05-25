@@ -23,7 +23,7 @@ function App() {
       }
     };
     fetchItems();
-  }, []);
+  }, [items]);
   const [search, setSearch] = useState("");
   const [newItem, setNewItem] = useState("");
 
