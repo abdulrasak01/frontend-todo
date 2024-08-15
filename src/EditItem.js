@@ -30,7 +30,7 @@ const EditItem = ({items,updateData,setUpdateData,changeTask,cancelUpdate,update
          <button type="submit" aria-label="AddItem" className="mt-1 mx-2" onClick={(e)=>updateTask(e)}>
          <span className="w-5 h-5 font-bold border rounded-2xl bg-green-500 p-2">Update</span>
          </button>
-         <button type="cancel" aria-label="AddItem" className="mt-1 " onClick={()=>cancelUpdate()}>
+         <button type="cancel" aria-label="AddItem" className="mt-1 " onClick={(e)=>cancelUpdate(e)}>
          <span className="w-5 h-5 font-bold border rounded-2xl bg-red-500 p-2">Cancel</span>
          </button>
        </div>

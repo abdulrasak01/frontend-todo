@@ -9,7 +9,7 @@ import EditItem from "./EditItem";
 // JSON.parse(localStorage.getItem("TodoList"))
 function App() {
   let [items, setItems] = useState([]);
-const [updateData,setUpdateData]=useState('')
+  const [updateData, setUpdateData] = useState("");
   const fetchItems = async () => {
     try {
       const response = await axios.get("http://127.0.0.1:8000/todos/");
@@ -50,12 +50,10 @@ const [updateData,setUpdateData]=useState('')
     }
   };
 
-
-
-  const cancelUpdate =()=>{
-    setUpdateData('');
+  const cancelUpdate = (e) => {
+    e.preventDefault();
+    setUpdateData("");
   }
-
 
   const handleDelete = async (id) => {
     try {
@@ -74,38 +72,34 @@ const [updateData,setUpdateData]=useState('')
     setNewItem("");
   };
 
+  const changeTask = (e) => {
+    e.preventDefault();
+    let newEntry = {
+      id: updateData.id,
+      item: e.target.value,
+      checked: updateData.checked,
+    };
+    setUpdateData(newEntry);
+  };
 
-const changeTask = (e)=>{
-  e.preventDefault();
-let newEntry = {
-  id:updateData.id,
-  item: e.target.value,
-  checked:updateData.checked 
-}
-setUpdateData(newEntry)
+  const updateTask = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `http://127.0.0.1:8000/detail/${updateData.id}`,
+        updateData
+      );
 
-}
-
-const updateTask= async(e)=>{
-  e.preventDefault();
-  // let filterRecords = [...items].filter(item=>item.id !==updateData.id)
-  // console.log(filterRecords);
-  // let updateItems = [...filterRecords,updateData]
-  // console.log(updateItems);
-  try {
-    const response = await axios.put(
-      `http://127.0.0.1:8000/detail/${updateData.id}`,
-      updateData
-    );
-
-    setItems(
-      items.map((item) => (item.id === updateData.id ? { ...response.data } : item))
-    );
-  } catch (err) {
-    console.log(`err${err.message}`);
-  }
-  setUpdateData('')
-};
+      setItems(
+        items.map((item) =>
+          item.id === updateData.id ? { ...response.data } : item
+        )
+      );
+    } catch (err) {
+      console.log(`err${err.message}`);
+    }
+    setUpdateData("");
+  };
   const handleCheck = async (id) => {
     const item = items.find((items) => items.id === id);
     const editItem = {
@@ -143,9 +137,9 @@ const updateTask= async(e)=>{
         setSearch={setSearch}
       />
       <EditItem
-      cancelUpdate={cancelUpdate}
-      changeTask={changeTask}
-      updateTask={updateTask}
+        cancelUpdate={cancelUpdate}
+        changeTask={changeTask}
+        updateTask={updateTask}
         newItem={newItem}
         items={items}
         updateData={updateData}
